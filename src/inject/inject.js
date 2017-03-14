@@ -1,27 +1,23 @@
 chrome.extension.sendMessage({}, function(response) {
-	var readyStateCheckInterval = setInterval(function() {
-		if (document.readyState === "complete") {
-			clearInterval(readyStateCheckInterval);
-			var shareOfflineCheckInterval = setInterval(function() {
+	var shareOfflineCheckInterval = setInterval(function() {
 				if ($("#share-offline-link").length) {
 					clearInterval(shareOfflineCheckInterval);
 					$("label .input-placeholder").html("支持http/https/ftp/电驴/磁力链协议/<strong>迅雷/快车/旋风</strong>");
 					$("#share-offline-link").on("change paste keyup", function() {
 						if ($(this).val().match(/thunder:\/\//g)) {
-							$(this).val(decodeThunder($(this).val()));
+							$(this).val(decodeThunder($(this).val().trim()));
 						}
 						else if ($(this).val().match(/Flashget:\/\//g)) {
-							$(this).val(decodeFlashget($(this).val()));
+							$(this).val(decodeFlashget($(this).val().trim()));
 						}
 						else if ($(this).val().match(/qqdl:\/\//g)) {
-							$(this).val(decodeQQ($(this).val()));
+							$(this).val(decodeQQ($(this).val().trim()));
 						}
 					});
 				};
-			}, 800);
-		}
-	}, 10);
+			}, 400);
 });
+
 
 function decodeThunder(url) {
 	url = url.replace('thunder://','');

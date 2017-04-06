@@ -4,18 +4,28 @@ chrome.extension.sendMessage({}, function(response) {
 					clearInterval(shareOfflineCheckInterval);
 					$("label .input-placeholder").html("支持http/https/ftp/电驴/磁力链协议/<strong>迅雷/快车/旋风</strong>");
 					$("#share-offline-link").on("change paste keyup", function() {
+						var result = "";
 						if ($(this).val().match(/thunder:\/\//g)) {
-							$(this).val(decodeThunder($(this).val().trim()));
+							result = decodeThunder($(this).val().trim());
 						}
 						else if ($(this).val().match(/Flashget:\/\//g)) {
-							$(this).val(decodeFlashget($(this).val().trim()));
+							result = decodeFlashget($(this).val().trim());
 						}
 						else if ($(this).val().match(/qqdl:\/\//g)) {
-							$(this).val(decodeQQ($(this).val().trim()));
+							result = decodeQQ($(this).val().trim());
+						}
+						if (result) {
+							if (result.length > 3 && result.substr(0,3) == "ftp") {
+								alert("插件提示：您输入的链接转换为原始链接后为ftp，百度网盘暂不支持该协议");
+								$(this).val(result);
+							}
+							else {
+								$(this).val(result);
+							}
 						}
 					});
 				};
-			}, 400);
+			}, 800);
 });
 
 
